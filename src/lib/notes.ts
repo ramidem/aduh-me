@@ -13,6 +13,8 @@ export async function getNotes(): Promise<Note[]> {
 	return notes.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
+export const NOT_FOUND_ID = 'not-found';
+
 export const RESERVED_SLUGS = ['folders', 'tags'];
 
 export function noteUrl(note: Note, folder?: string): string {
