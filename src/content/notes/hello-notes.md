@@ -142,7 +142,7 @@ Markdown has no syntax for these, so each one is a small block of HTML.
 </div>
 
 <div class="note-card-block">
-<a class="note-card" href="/jekyll/what-the-blog/">
+<a class="note-card" href="/what-the-blog/">
 <span class="note-card-text">
 <strong>what the blog?</strong>
 <span class="note-card-description">A link to another note, with an image on the right.</span>
