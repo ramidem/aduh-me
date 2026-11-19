@@ -1,0 +1,38 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/notes.css';
+import { SITE_AUTHOR, SITE_TAGLINE } from '../consts';
+
+interface Props {
+	title?: string;
+	description?: string;
+	type?: 'website' | 'article';
+}
+
+const { title, description = SITE_TAGLINE, type = 'website' } = Astro.props;
+const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : `${SITE_AUTHOR} • ${SITE_TAGLINE}`;
+---
+
+<!doctype html>
+<html lang="en" transition:animate="none">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="author" content={SITE_AUTHOR} />
+		<meta name="description" content={description} />
+		<meta property="og:type" content={type} />
+		<meta property="og:title" content={title ?? SITE_TAGLINE} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={Astro.url.href} />
+		<meta name="twitter:card" content="summary" />
+		<title>{fullTitle}</title>
+		<link rel="preload" href="/fonts/vollkorn/Vollkorn-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
+		<ClientRouter />
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>

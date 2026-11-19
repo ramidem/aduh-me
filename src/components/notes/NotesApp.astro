@@ -1,0 +1,131 @@
+---
+import {
+	formatFullDate,
+	groupByMonth,
+	noteUrl,
+	notesInFolder,
+	type Note,
+} from '../../lib/notes';
+import FolderList from './FolderList.astro';
+import NoteRow from './NoteRow.astro';
+
+interface Props {
+	notes: Note[];
+	current?: Note;
+	view: 'note' | 'list';
+	folder?: string;
+}
+
+const { notes, current, view, folder } = Astro.props;
+const listed = folder ? notesInFolder(notes, folder) : notes;
+const pinned = listed.filter((note) => note.data.pinned);
+const months = groupByMonth(listed.filter((note) => !note.data.pinned));
+---
+
+<div class="wrapper notes-wrapper">
+	<div
+		class:list={['notes-app', { 'notes-app--note': view === 'note' }]}
+		data-note-folder={view === 'note' ? (current?.data.category ?? '') : undefined}
+		data-list-folder={view === 'list' ? (folder ?? '') : undefined}
+	>
+		<nav class="notes-sidebar" id="notes-sidebar" aria-label="Folders">
+			<div class="notes-toolbar">
+				<h1 class="notes-heading">Stuff<span class="amp">&amp;</span>NonSense</h1>
+			</div>
+			<FolderList notes={notes} currentFolder={folder} />
+		</nav>
+
+		<section class="notes-list" aria-label="Notes">
+			<div class="notes-list-top">
+				<button
+					class="notes-sidebar-toggle"
+					type="button"
+					aria-label="Show or hide folders"
+					aria-controls="notes-sidebar"
+					aria-expanded="false"
+				>
+					<svg class="notes-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M9 4v16"></path></svg>
+				</button>
+			</div>
+			<div class="notes-search">
+				<div class="notes-search-field">
+					<input
+						type="search"
+						placeholder="Search"
+						aria-label="Search notes"
+						aria-keyshortcuts="Control+K Meta+K /"
+					/>
+					<kbd class="notes-search-hint" aria-hidden="true">⌘K</kbd>
+				</div>
+			</div>
+
+			<div class="notes-scroll">
+				{
+					pinned.length > 0 && (
+						<>
+							<p class="list-group">Pinned</p>
+							<ul>
+								{pinned.map((note) => (
+									<NoteRow note={note} current={current} />
+								))}
+							</ul>
+						</>
+					)
+				}
+				{
+					months.map((month) => (
+						<>
+							<p class="list-group">{month.name}</p>
+							<ul>
+								{month.notes.map((note) => (
+									<NoteRow note={note} current={current} />
+								))}
+							</ul>
+						</>
+					))
+				}
+				{listed.length === 0 && <p class="notes-empty">No notes yet.</p>}
+			</div>
+		</section>
+
+		<section class="notes-body" aria-label="Note">
+			<div class="notes-toolbar">
+				<a class="notes-back" href="/">&larr; <span>notes</span></a>
+			</div>
+
+			<div class="notes-actions">
+				{
+					current && (
+						<button
+							class="notes-share"
+							type="button"
+							aria-label="Share this note"
+							data-path={noteUrl(current)}
+							data-title={current.data.title}
+						>
+							<svg class="notes-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"></path><path d="M16 6l-4-4-4 4"></path><path d="M12 2v13"></path></svg>
+						</button>
+					)
+				}
+			</div>
+
+			<div class="notes-body-scroll">
+				{
+					current && (
+						<article class="note">
+							<time class="note-date" datetime={current.data.date.toISOString()}>
+								{formatFullDate(current.data.date)}
+							</time>
+							<h1>{current.data.title}</h1>
+							<slot />
+						</article>
+					)
+				}
+			</div>
+		</section>
+	</div>
+</div>
+
+<script>
+	import '../../scripts/notes';
+</script>

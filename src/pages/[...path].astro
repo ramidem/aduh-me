@@ -1,0 +1,45 @@
+---
+import { render } from 'astro:content';
+import NotesApp from '../components/notes/NotesApp.astro';
+import NotesLayout from '../layouts/NotesLayout.astro';
+import {
+	folderNames,
+	getNotes,
+	noteUrl,
+	notesInFolder,
+	openingNote,
+	type Note,
+} from '../lib/notes';
+
+interface Props {
+	folder?: string;
+	note?: Note;
+}
+
+export async function getStaticPaths() {
+	const notes = await getNotes();
+	const folderPaths = folderNames(notes).map((folder) => ({
+		params: { path: folder },
+		props: { folder },
+	}));
+	const notePaths = notes.map((note) => ({
+		params: { path: noteUrl(note).replace(/^\/|\/$/g, '') },
+		props: { note },
+	}));
+	return [...folderPaths, ...notePaths];
+}
+
+const { folder, note } = Astro.props;
+const notes = await getNotes();
+const current = note ?? openingNote(notesInFolder(notes, folder ?? ''));
+const view = note ? 'note' : 'list';
+const Content = current ? (await render(current)).Content : undefined;
+const title = current && note ? current.data.title : folder;
+const description = note ? note.data.description : `Notes in the ${folder} folder.`;
+---
+
+<NotesLayout title={title} description={description} type={note ? 'article' : 'website'}>
+	<NotesApp notes={notes} current={current} view={view} folder={note ? undefined : folder}>
+		{Content && <Content />}
+	</NotesApp>
+</NotesLayout>

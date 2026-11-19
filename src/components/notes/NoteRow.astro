@@ -1,0 +1,18 @@
+---
+import { formatShortDate, noteUrl, type Note } from '../../lib/notes';
+
+interface Props {
+	note: Note;
+	current?: Note;
+}
+
+const { note, current } = Astro.props;
+const isCurrent = current?.id === note.id;
+---
+
+<li data-folder={note.data.category ?? ''}>
+	<a class="note-row" href={noteUrl(note)} aria-current={isCurrent ? 'true' : undefined}>
+		<strong>{note.data.title}</strong>
+		<span class="note-row-meta"><time datetime={note.data.date.toISOString()}>{formatShortDate(note.data.date)}</time>{note.data.description}</span>
+	</a>
+</li>

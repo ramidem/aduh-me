@@ -1,0 +1,31 @@
+---
+import { folderNames, folderUrl, notesInFolder, type Note } from '../../lib/notes';
+import FolderIcon from './FolderIcon.astro';
+
+interface Props {
+	notes: Note[];
+	currentFolder?: string;
+}
+
+const { notes, currentFolder } = Astro.props;
+const folders = folderNames(notes);
+---
+
+<ul class="folder-list">
+	<li>
+		<a href="/" data-all-notes aria-current={currentFolder ? undefined : 'true'}>
+			<FolderIcon />All Notes<span class="folder-count">{notes.length}</span>
+		</a>
+	</li>
+	{
+		folders.map((folder) => (
+			<li>
+				<a href={folderUrl(folder)} data-folder={folder} aria-current={folder === currentFolder ? 'true' : undefined}>
+					<FolderIcon />
+					{folder}
+					<span class="folder-count">{notesInFolder(notes, folder).length}</span>
+				</a>
+			</li>
+		))
+	}
+</ul>
