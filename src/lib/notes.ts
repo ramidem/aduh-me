@@ -8,15 +8,19 @@ export type MonthGroup = { name: string; notes: Note[] };
 export async function getNotes(): Promise<Note[]> {
 	const now = Date.now();
 	const notes = await getCollection('notes', ({ data }) => data.date.valueOf() <= now);
+	const reserved = notes.find((note) => RESERVED_SLUGS.includes(note.id));
+	if (reserved) throw new Error(`"${reserved.id}" is a reserved URL segment and cannot be a note slug`);
 	return notes.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
-export function noteUrl(note: Note): string {
-	return note.data.category ? `/${note.data.category}/${note.id}/` : `/${note.id}/`;
+export const RESERVED_SLUGS = ['folders', 'tags'];
+
+export function noteUrl(note: Note, folder?: string): string {
+	return folder ? `/folders/${folder}/${note.id}/` : `/${note.id}/`;
 }
 
 export function folderUrl(folder: string): string {
-	return `/${folder}/`;
+	return `/folders/${folder}/`;
 }
 
 export function folderNames(notes: Note[]): string[] {

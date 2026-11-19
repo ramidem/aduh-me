@@ -7,9 +7,11 @@ interface Props {
 	title?: string;
 	description?: string;
 	type?: 'website' | 'article';
+	canonical?: string;
 }
 
-const { title, description = SITE_TAGLINE, type = 'website' } = Astro.props;
+const { title, description = SITE_TAGLINE, type = 'website', canonical } = Astro.props;
+const canonicalHref = canonical ? (Astro.site ? new URL(canonical, Astro.site).href : canonical) : undefined;
 const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : `${SITE_AUTHOR} • ${SITE_TAGLINE}`;
 ---
 
@@ -26,7 +28,8 @@ const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : `${SITE_AUTHOR} • ${
 		<meta property="og:type" content={type} />
 		<meta property="og:title" content={title ?? SITE_TAGLINE} />
 		<meta property="og:description" content={description} />
-		<meta property="og:url" content={Astro.url.href} />
+		{canonicalHref && <link rel="canonical" href={canonicalHref} />}
+		{canonicalHref && <meta property="og:url" content={canonicalHref} />}
 		<meta name="twitter:card" content="summary" />
 		<title>{fullTitle}</title>
 		<link rel="preload" href="/fonts/vollkorn/Vollkorn-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />

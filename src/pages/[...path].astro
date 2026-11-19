@@ -4,9 +4,10 @@ import NotesApp from '../components/notes/NotesApp.astro';
 import NotesLayout from '../layouts/NotesLayout.astro';
 import {
 	folderNames,
+	folderUrl,
 	getNotes,
-	noteUrl,
 	notesInFolder,
+	noteUrl,
 	openingNote,
 	type Note,
 } from '../lib/notes';
@@ -19,27 +20,42 @@ interface Props {
 export async function getStaticPaths() {
 	const notes = await getNotes();
 	const folderPaths = folderNames(notes).map((folder) => ({
-		params: { path: folder },
+		params: { path: `folders/${folder}` },
 		props: { folder },
 	}));
 	const notePaths = notes.map((note) => ({
-		params: { path: noteUrl(note).replace(/^\/|\/$/g, '') },
+		params: { path: note.id },
 		props: { note },
 	}));
-	return [...folderPaths, ...notePaths];
+	const folderNotePaths = notes.flatMap((note) =>
+		note.data.category
+			? [
+					{
+						params: { path: `folders/${note.data.category}/${note.id}` },
+						props: { note, folder: note.data.category },
+					},
+				]
+			: [],
+	);
+	return [...folderPaths, ...notePaths, ...folderNotePaths];
 }
 
 const { folder, note } = Astro.props;
 const notes = await getNotes();
-const current = note ?? openingNote(notesInFolder(notes, folder ?? ''));
+const current = note ?? openingNote(folder ? notesInFolder(notes, folder) : notes);
 const view = note ? 'note' : 'list';
 const Content = current ? (await render(current)).Content : undefined;
 const title = current && note ? current.data.title : folder;
 const description = note ? note.data.description : `Notes in the ${folder} folder.`;
 ---
 
-<NotesLayout title={title} description={description} type={note ? 'article' : 'website'}>
-	<NotesApp notes={notes} current={current} view={view} folder={note ? undefined : folder}>
+<NotesLayout
+	title={title}
+	description={description}
+	type={note ? 'article' : 'website'}
+	canonical={note ? noteUrl(note) : folderUrl(folder ?? '')}
+>
+	<NotesApp notes={notes} current={current} view={view} folder={folder}>
 		{Content && <Content />}
 	</NotesApp>
 </NotesLayout>

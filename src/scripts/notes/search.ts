@@ -84,7 +84,7 @@ export function initSearch(destination: URL) {
 	const filterList = (query: string) => {
 		const needle = query.toLowerCase();
 		const rows: HTMLElement[] = [];
-		scroll.querySelectorAll<HTMLAnchorElement>('li[data-folder]:not([hidden]) .note-row').forEach((link) => {
+		scroll.querySelectorAll<HTMLAnchorElement>('ul:not(.notes-results) .note-row').forEach((link) => {
 			const meta = link.querySelector('.note-row-meta');
 			const preview = meta ? (meta.cloneNode(true) as HTMLElement) : document.createElement('span');
 			preview.querySelectorAll('time').forEach((time) => time.remove());

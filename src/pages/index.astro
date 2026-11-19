@@ -9,7 +9,7 @@ const current = openingNote(notes);
 const Content = current ? (await render(current)).Content : undefined;
 ---
 
-<NotesLayout>
+<NotesLayout canonical="/">
 	<NotesApp notes={notes} current={current} view="list">
 		{Content && <Content />}
 	</NotesApp>

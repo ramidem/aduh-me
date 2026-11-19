@@ -1,5 +1,6 @@
 ---
 import {
+	folderUrl,
 	formatFullDate,
 	groupByMonth,
 	noteUrl,
@@ -25,8 +26,6 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 <div class="wrapper notes-wrapper">
 	<div
 		class:list={['notes-app', { 'notes-app--note': view === 'note' }]}
-		data-note-folder={view === 'note' ? (current?.data.category ?? '') : undefined}
-		data-list-folder={view === 'list' ? (folder ?? '') : undefined}
 	>
 		<nav class="notes-sidebar" id="notes-sidebar" aria-label="Folders">
 			<div class="notes-toolbar">
@@ -66,7 +65,7 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 							<p class="list-group">Pinned</p>
 							<ul>
 								{pinned.map((note) => (
-									<NoteRow note={note} current={current} />
+									<NoteRow note={note} current={current} folder={folder} />
 								))}
 							</ul>
 						</>
@@ -78,7 +77,7 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 							<p class="list-group">{month.name}</p>
 							<ul>
 								{month.notes.map((note) => (
-									<NoteRow note={note} current={current} />
+									<NoteRow note={note} current={current} folder={folder} />
 								))}
 							</ul>
 						</>
@@ -90,7 +89,7 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 
 		<section class="notes-body" aria-label="Note">
 			<div class="notes-toolbar">
-				<a class="notes-back" href="/">&larr; <span>notes</span></a>
+				<a class="notes-back" href={folder ? folderUrl(folder) : '/'}>&larr; <span>{folder ?? 'notes'}</span></a>
 			</div>
 
 			<div class="notes-actions">

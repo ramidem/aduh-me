@@ -1,4 +1,3 @@
-import { initList } from './list';
 import { bindMediaGlobals, initMedia } from './media';
 import { bindSearchGlobals, initSearch } from './search';
 import { initShare } from './share';
@@ -8,7 +7,6 @@ let destination = new URL(location.href);
 let listScroll = 0;
 
 function initPage() {
-	initList();
 	initSidebar();
 	initSearch(destination);
 	initShare();
