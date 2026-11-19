@@ -3,7 +3,6 @@
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
 
-# Enforce Conventional Commits format (e.g., feat: add login)
 PATTERN="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,50}"
 
 if ! [[ "$COMMIT_MSG" =~ $PATTERN ]]; then
