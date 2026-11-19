@@ -212,6 +212,10 @@ body {
   color: var(--notes-accent);
 }
 
+.folder-list a[aria-current="true"] .notes-icon {
+  fill: currentColor;
+}
+
 .folder-list a.folder-missing {
   font-style: italic;
   text-decoration: underline dashed var(--notes-accent);
