@@ -111,11 +111,12 @@ body {
 }
 
 .notes-app--sidebar-closed {
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 0px 280px 1fr;
 }
 
 .notes-app--sidebar-closed .notes-sidebar {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 :where(.notes-app) ul {
@@ -171,7 +172,12 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
+}
+
+.notes-sidebar > * {
+  min-width: 200px;
 }
 
 .notes-heading .amp {
@@ -885,19 +891,21 @@ li:last-child > .note-row::after {
   }
 
   .notes-sidebar {
-    display: none;
-  }
-
-  .notes-app--sidebar-open .notes-sidebar {
     bottom: 0;
-    box-shadow: 8px 0 24px rgb(0 0 0 / 12%);
-    display: flex;
     left: 0;
     padding: 16px 0 16px 16px;
     position: fixed;
     top: 0;
+    transform: translateX(-100%);
+    visibility: hidden;
     width: 236px;
     z-index: 3;
+  }
+
+  .notes-app--sidebar-open .notes-sidebar {
+    box-shadow: 8px 0 24px rgb(0 0 0 / 12%);
+    transform: none;
+    visibility: visible;
   }
 
   .notes-body-scroll {
@@ -933,5 +941,44 @@ li:last-child > .note-row::after {
 
   .notes-body-scroll {
     padding: 0 18px 32px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .notes-app--animate {
+    transition: grid-template-columns 0.25s ease;
+  }
+
+  .notes-app--animate .notes-sidebar {
+    transition: opacity 0.2s ease;
+  }
+
+  .notes-app--animate.notes-app--sidebar-closed .notes-sidebar {
+    transition:
+      opacity 0.2s ease,
+      visibility 0s linear 0.25s;
+  }
+
+  .notes-sidebar-toggle,
+  .notes-share,
+  .note .note-card {
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 999px) {
+  .notes-app--animate .notes-sidebar {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      visibility 0s linear 0.25s;
+  }
+
+  .notes-app--animate.notes-app--sidebar-open .notes-sidebar {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
   }
 }

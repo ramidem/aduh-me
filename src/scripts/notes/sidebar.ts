@@ -12,6 +12,7 @@ function isOpen(app: HTMLElement) {
 }
 
 function setOpen(app: HTMLElement, toggle: HTMLElement, open: boolean) {
+	app.classList.add('notes-app--animate');
 	if (wide.matches) {
 		app.classList.toggle('notes-app--sidebar-closed', !open);
 		try {
@@ -27,7 +28,7 @@ function reset() {
 	const app = getApp();
 	const toggle = getToggle();
 	if (!app || !toggle) return;
-	app.classList.remove('notes-app--sidebar-open', 'notes-app--sidebar-closed');
+	app.classList.remove('notes-app--animate', 'notes-app--sidebar-open', 'notes-app--sidebar-closed');
 	let hidden = false;
 	try {
 		hidden = sessionStorage.getItem(storageKey) === '1';

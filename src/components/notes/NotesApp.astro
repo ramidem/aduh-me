@@ -108,7 +108,7 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 				}
 			</div>
 
-			<div class="notes-body-scroll">
+			<div class="notes-body-scroll" transition:animate="fade">
 				{
 					current && (
 						<article class="note">
