@@ -2,6 +2,8 @@
 
 Follow the `no-code-comments` skill (`.claude/skills/no-code-comments/SKILL.md`) at all times: never write code comments, delete existing ones in files you touch, and never read `node_modules`.
 
+Stay on `main` when making changes. Do not create feature branches.
+
 ## Development
 
 When starting the dev server, use background mode:
