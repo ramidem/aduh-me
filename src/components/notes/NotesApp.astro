@@ -107,6 +107,8 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 							class="notes-share"
 							type="button"
 							aria-label="Share this note"
+							data-goatcounter-click="note-share"
+							data-goatcounter-title={`Share ${current.data.title}`}
 							data-path={noteUrl(current)}
 							data-title={current.data.title}
 						>

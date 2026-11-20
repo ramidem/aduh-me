@@ -47,6 +47,9 @@ const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : homeTitle;
 		<link rel="preload" href="/fonts/vollkorn/Vollkorn-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
 		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
 		<ClientRouter />
+		<script>
+			import '../scripts/analytics';
+		</script>
 	</head>
 	<body>
 		<slot />
