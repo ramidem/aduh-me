@@ -1,46 +1,37 @@
-# Astro Starter Kit: Basics
+# aduh-me
+
+Med Aduh's personal site: a notes blog laid out like a notes app, built with [Astro](https://astro.build).
+
+## Notes
+
+Each note is a markdown file in `src/content/notes/`. The file name is the URL slug, so `start-here.md` is served at `/start-here/`.
+
+Front matter:
+
+| Field         | Required | Meaning                                                                     |
+| :------------ | :------- | :-------------------------------------------------------------------------- |
+| `title`       | yes      | The note title.                                                             |
+| `date`        | yes      | Publish date with a UTC offset. Notes dated in the future stay hidden.      |
+| `description` | yes      | One line, used in the note list, meta description and RSS.                  |
+| `category`    | no       | The folder the note sits in, served at `/folders/<category>/`.              |
+| `pinned`      | no       | `true` lists the note under Pinned and makes it the opening note on `/`.    |
+| `draft`       | no       | `true` shows the note in `npm run dev` and leaves it out of the build.      |
+
+`not-found.md` is the 404 page and never appears in the list. `folders` and `tags` cannot be note slugs.
+
+## Commands
+
+Use the Node version in `.nvmrc`:
 
 ```sh
-npm create astro@latest -- --template basics
+nvm use
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command           | Action                                      |
+| :---------------- | :------------------------------------------ |
+| `npm run dev`     | Start the dev server at `localhost:4321`.   |
+| `npm run build`   | Build the site to `dist/`.                  |
+| `npm run preview` | Serve the built site locally.               |
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The build also writes `sitemap-index.xml`, `robots.txt` and `rss.xml`.

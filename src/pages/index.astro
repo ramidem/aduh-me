@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import NotesApp from '../components/notes/NotesApp.astro';
 import NotesLayout from '../layouts/NotesLayout.astro';
+import { jsonLd } from '../lib/jsonLd';
 import { getNotes, openingNote } from '../lib/notes';
 
 const notes = await getNotes();
@@ -9,7 +10,7 @@ const current = openingNote(notes);
 const Content = current ? (await render(current)).Content : undefined;
 ---
 
-<NotesLayout canonical="/">
+<NotesLayout canonical="/" jsonLd={jsonLd(Astro.site!)}>
 	<NotesApp notes={notes} current={current} view="list">
 		{Content && <Content />}
 	</NotesApp>

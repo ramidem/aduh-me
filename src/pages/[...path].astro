@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import NotesApp from '../components/notes/NotesApp.astro';
 import NotesLayout from '../layouts/NotesLayout.astro';
+import { jsonLd } from '../lib/jsonLd';
 import {
 	folderNames,
 	folderUrl,
@@ -54,6 +55,7 @@ const description = note ? note.data.description : `Notes in the ${folder} folde
 	description={description}
 	type={note ? 'article' : 'website'}
 	canonical={note ? noteUrl(note) : folderUrl(folder ?? '')}
+	jsonLd={note && jsonLd(Astro.site!, note)}
 >
 	<NotesApp notes={notes} current={current} view={view} folder={folder}>
 		{Content && <Content />}

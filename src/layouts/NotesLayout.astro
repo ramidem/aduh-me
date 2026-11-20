@@ -1,7 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '../styles/notes.css';
-import { SITE_AUTHOR, SITE_TAGLINE } from '../consts';
+import { SITE_AUTHOR, SITE_ROLE, SITE_TAGLINE } from '../consts';
 
 interface Props {
 	title?: string;
@@ -9,11 +9,14 @@ interface Props {
 	type?: 'website' | 'article';
 	canonical?: string;
 	noindex?: boolean;
+	jsonLd?: object;
 }
 
-const { title, description = SITE_TAGLINE, type = 'website', canonical, noindex = false } = Astro.props;
-const canonicalHref = canonical ? (Astro.site ? new URL(canonical, Astro.site).href : canonical) : undefined;
-const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : `${SITE_AUTHOR} • ${SITE_TAGLINE}`;
+const { title, description = SITE_TAGLINE, type = 'website', canonical, noindex = false, jsonLd } = Astro.props;
+const canonicalHref = canonical ? new URL(canonical, Astro.site).href : undefined;
+const imageHref = new URL('/images/notes/site-icon.png', Astro.site).href;
+const homeTitle = `${SITE_AUTHOR} • ${SITE_ROLE}`;
+const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : homeTitle;
 ---
 
 <!doctype html>
@@ -29,13 +32,17 @@ const fullTitle = title ? `${title} • ${SITE_AUTHOR}` : `${SITE_AUTHOR} • ${
 		<meta name="author" content={SITE_AUTHOR} />
 		<meta name="description" content={description} />
 		<meta property="og:type" content={type} />
-		<meta property="og:title" content={title ?? SITE_TAGLINE} />
+		<meta property="og:site_name" content={SITE_AUTHOR} />
+		<meta property="og:title" content={title ?? homeTitle} />
 		<meta property="og:description" content={description} />
+		<meta property="og:image" content={imageHref} />
 		{canonicalHref && <link rel="canonical" href={canonicalHref} />}
 		{canonicalHref && <meta property="og:url" content={canonicalHref} />}
 		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:image" content={imageHref} />
 		<title>{fullTitle}</title>
 		<link rel="preload" href="/fonts/vollkorn/Vollkorn-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
+		{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')} />}
 		<ClientRouter />
 	</head>
 	<body>
