@@ -73,7 +73,7 @@ li:last-child {
   --notes-sidebar-active: #dcdcdf;
   --notes-line: #e4e4e7;
   --notes-text: #1d1d1f;
-  --notes-muted: #86868b;
+  --notes-muted: #616166;
   --font-display: "Vollkorn", Georgia, serif;
   --font-readable: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -956,6 +956,10 @@ li:last-child > .note-row::after {
 
   .notes-wrapper {
     border: 0;
+  }
+
+  .notes-search input {
+    font-size: 16px;
   }
 
   .notes-sidebar {
