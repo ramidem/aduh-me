@@ -14,9 +14,10 @@ interface Props {
 	current?: Note;
 	view: 'note' | 'list';
 	folder?: string;
+	shareable?: boolean;
 }
 
-const { notes, current, view, folder } = Astro.props;
+const { notes, current, view, folder, shareable = true } = Astro.props;
 const listed = folder ? notesInFolder(notes, folder) : notes;
 const pinned = listed.filter((note) => note.data.pinned);
 const months = groupByMonth(listed.filter((note) => !note.data.pinned));
@@ -101,7 +102,7 @@ const months = groupByMonth(listed.filter((note) => !note.data.pinned));
 
 			<div class="notes-actions">
 				{
-					current && (
+					current && shareable && (
 						<button
 							class="notes-share"
 							type="button"

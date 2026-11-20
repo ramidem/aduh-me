@@ -10,7 +10,7 @@ const { Content } = await render(current);
 ---
 
 <NotesLayout title={current.data.title} description={current.data.description} noindex>
-	<NotesApp notes={notes} current={current} view="note">
+	<NotesApp notes={notes} current={current} view="note" shareable={false}>
 		<Content />
 	</NotesApp>
 </NotesLayout>
