@@ -3,6 +3,7 @@ title: Hello, notes
 date: 2026-10-13T14:27:00+08:00
 description: Every piece of markdown a note can use
 pinned: false
+draft: true
 ---
 
 Sample note. Every piece of markdown a note can use, so the styles get tested in one place.

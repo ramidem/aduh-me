@@ -1,21 +1,30 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 import { SITE_TIMEZONE } from '../consts';
 
 export type Note = CollectionEntry<'notes'>;
 
 export type MonthGroup = { name: string; notes: Note[] };
 
+const NOT_FOUND_ID = 'not-found';
+
+const RESERVED_SLUGS = ['folders', 'tags'];
+
 export async function getNotes(): Promise<Note[]> {
 	const now = Date.now();
-	const notes = await getCollection('notes', ({ data }) => data.date.valueOf() <= now);
+	const notes = await getCollection(
+		'notes',
+		({ id, data }) => id !== NOT_FOUND_ID && data.date.valueOf() <= now && !(import.meta.env.PROD && data.draft),
+	);
 	const reserved = notes.find((note) => RESERVED_SLUGS.includes(note.id));
 	if (reserved) throw new Error(`"${reserved.id}" is a reserved URL segment and cannot be a note slug`);
 	return notes.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
-export const NOT_FOUND_ID = 'not-found';
-
-export const RESERVED_SLUGS = ['folders', 'tags'];
+export async function getNotFoundNote(): Promise<Note> {
+	const note = await getEntry('notes', NOT_FOUND_ID);
+	if (!note) throw new Error(`Missing note "${NOT_FOUND_ID}" in src/content/notes`);
+	return note;
+}
 
 export function noteUrl(note: Note, folder?: string): string {
 	return folder ? `/folders/${folder}/${note.id}/` : `/${note.id}/`;

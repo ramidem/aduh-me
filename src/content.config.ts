@@ -10,6 +10,7 @@ const notes = defineCollection({
 		description: z.string(),
 		category: z.string().optional(),
 		pinned: z.boolean().default(false),
+		draft: z.boolean().default(false),
 	}),
 });
 

@@ -2,11 +2,10 @@
 import { render } from 'astro:content';
 import NotesApp from '../components/notes/NotesApp.astro';
 import NotesLayout from '../layouts/NotesLayout.astro';
-import { getNotes, NOT_FOUND_ID } from '../lib/notes';
+import { getNotes, getNotFoundNote } from '../lib/notes';
 
 const notes = await getNotes();
-const current = notes.find((note) => note.id === NOT_FOUND_ID);
-if (!current) throw new Error(`Missing note "${NOT_FOUND_ID}" in src/content/notes`);
+const current = await getNotFoundNote();
 const { Content } = await render(current);
 ---
 

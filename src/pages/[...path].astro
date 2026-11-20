@@ -7,7 +7,6 @@ import {
 	folderUrl,
 	getNotes,
 	notesInFolder,
-	NOT_FOUND_ID,
 	noteUrl,
 	openingNote,
 	type Note,
@@ -55,7 +54,6 @@ const description = note ? note.data.description : `Notes in the ${folder} folde
 	description={description}
 	type={note ? 'article' : 'website'}
 	canonical={note ? noteUrl(note) : folderUrl(folder ?? '')}
-	noindex={note?.id === NOT_FOUND_ID}
 >
 	<NotesApp notes={notes} current={current} view={view} folder={folder}>
 		{Content && <Content />}
