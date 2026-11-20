@@ -13,6 +13,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.6",
     "astro": "^7.4.12"
   },
   "devDependencies": {
