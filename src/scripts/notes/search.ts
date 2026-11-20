@@ -39,8 +39,6 @@ export function initSearch(destination: URL) {
 		? document.querySelector('.notes-scroll .note-row[aria-current="true"]')
 		: null;
 	const currentPath = currentLink?.getAttribute('href') ?? null;
-	const back = document.querySelector<HTMLAnchorElement>('.notes-back');
-	const backPath = back?.getAttribute('href') ?? null;
 
 	const withQuery = (path: string) => {
 		const query = input.value.trim();
@@ -104,7 +102,6 @@ export function initSearch(destination: URL) {
 			else url.searchParams.delete('q');
 			if (url.href !== location.href) history.replaceState(history.state, '', url);
 		}
-		if (back && backPath) back.href = withQuery(backPath);
 	};
 
 	let restoring = false;
